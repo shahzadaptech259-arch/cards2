@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BiteCraft — Fine Dining</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #0D0D0D;
+      --slate: #1A1A1A;
+      --card-bg: #161616;
+      --ivory: #F5ECD7;
+      --ivory-dim: #C8B89A;
+      --ember: #E8560A;
+      --gold: #C9A84C;
+      --mid: #3A3A3A;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--ivory);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 6%;
+      background: linear-gradient(180deg, rgba(13,13,13,0.95) 0%, transparent 100%);
+      backdrop-filter: blur(6px);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--ivory);
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+
+    .nav-logo span { color: var(--ember); }
+
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+
+    .nav-links a {
+      color: var(--ivory-dim);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover, .nav-links a.active { color: var(--ember); }
+
+    .nav-cta {
+      background: var(--ember);
+      color: white !important;
+      padding: 10px 24px;
+      border-radius: 4px;
+      font-weight: 600 !important;
+      transition: background 0.3s, transform 0.2s !important;
+    }
+
+    .nav-cta:hover { background: #d04800 !important; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 700px;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=90&w=1800&auto=format&fit=crop') center/cover no-repeat;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(13,13,13,1) 0%,
+        rgba(13,13,13,0.6) 45%,
+        rgba(13,13,13,0.2) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 6% 9%;
+      max-width: 800px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(52px, 7vw, 96px);
+      line-height: 1.05;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: var(--ivory);
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--ember);
+    }
+
+    .hero p {
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--ivory-dim);
+      max-width: 520px;
+      margin-bottom: 40px;
+    }
+
+    .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--ember);
+      color: white;
+      text-decoration: none;
+      padding: 16px 36px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: 0.3px;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .btn-primary:hover { background: #d04800; transform: translateY(-2px); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ivory);
+      text-decoration: none;
+      padding: 16px 28px;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 15px;
+      border: 1px solid rgba(245,236,215,0.25);
+      transition: border-color 0.3s, color 0.3s;
+    }
+
+    .btn-ghost:hover { border-color: var(--ivory); color: var(--ivory); }
+
+    /* ── SCROLL TICKER ── */
+    .ticker-wrap {
+      background: var(--ember);
+      overflow: hidden;
+      padding: 12px 0;
+      white-space: nowrap;
+    }
+
+    .ticker {
+      display: inline-block;
+      animation: ticker 25s linear infinite;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: white;
+    }
+
+    .ticker span { margin: 0 32px; }
+    .ticker span::before { content: '✦ '; color: rgba(255,255,255,0.5); }
+
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ── FEATURED DISHES ── */
+    .section { padding: 100px 6%; }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .section-label::after {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 60px;
+      color: var(--ivory);
+    }
+
+    .section-title em { font-style: italic; color: var(--ember); }
+
+    .featured-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 20px;
+    }
+
+    .feat-card {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .feat-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s cubic-bezier(0.25,1,0.5,1);
+      display: block;
+    }
+
+    .feat-card:hover img { transform: scale(1.07); }
+
+    .feat-card--large { grid-row: span 2; min-height: 580px; }
+    .feat-card--small { min-height: 270px; }
+
+    .feat-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(13,13,13,0.9) 0%, transparent 55%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 28px;
+      transition: background 0.4s;
+    }
+
+    .feat-card:hover .feat-overlay {
+      background: linear-gradient(to top, rgba(13,13,13,0.95) 0%, rgba(13,13,13,0.2) 60%);
+    }
+
+    .feat-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .feat-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--ivory);
+      margin-bottom: 6px;
+    }
+
+    .feat-card--large .feat-name { font-size: 34px; }
+
+    .feat-price {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ember);
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--slate);
+      border-top: 1px solid #2A2A2A;
+      border-bottom: 1px solid #2A2A2A;
+      padding: 60px 6%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .stat {
+      text-align: center;
+      padding: 20px;
+      border-right: 1px solid #2A2A2A;
+    }
+
+    .stat:last-child { border-right: none; }
+
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 52px;
+      font-weight: 700;
+      color: var(--ember);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--ivory-dim);
+      margin-top: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── EXPERIENCE STRIP ── */
+    .exp-strip {
+      padding: 100px 6%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .exp-visual {
+      position: relative;
+    }
+
+    .exp-visual img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      border-radius: 8px;
+      display: block;
+    }
+
+    .exp-badge {
+      position: absolute;
+      bottom: -24px;
+      right: -24px;
+      background: var(--ember);
+      border-radius: 8px;
+      padding: 28px 32px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(232,86,10,0.35);
+    }
+
+    .exp-badge-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: white;
+      line-height: 1;
+    }
+
+    .exp-badge-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .exp-text p {
+      font-size: 16px;
+      line-height: 1.85;
+      color: var(--ivory-dim);
+      margin-bottom: 20px;
+    }
+
+    .exp-features {
+      list-style: none;
+      margin: 30px 0 40px;
+    }
+
+    .exp-features li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      color: var(--ivory);
+      padding: 12px 0;
+      border-bottom: 1px solid #2A2A2A;
+    }
+
+    .exp-features li::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--ember);
+      flex-shrink: 0;
+    }
+
+    /* ── TESTIMONIAL ── */
+    .testimonials { background: var(--slate); padding: 100px 6%; }
+
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 60px;
+    }
+
+    .test-card {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 36px;
+      border: 1px solid #2A2A2A;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .test-card:hover { border-color: var(--ember); transform: translateY(-4px); }
+
+    .test-stars { color: var(--gold); font-size: 14px; margin-bottom: 20px; letter-spacing: 2px; }
+
+    .test-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-style: italic;
+      line-height: 1.7;
+      color: var(--ivory);
+      margin-bottom: 24px;
+    }
+
+    .test-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .test-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--mid);
+    }
+
+    .test-name { font-size: 14px; font-weight: 600; color: var(--ivory); }
+    .test-loc { font-size: 12px; color: var(--ivory-dim); margin-top: 2px; }
+
+    /* ── RESERVATION CTA ── */
+    .reservation {
+      position: relative;
+      overflow: hidden;
+      padding: 120px 6%;
+      text-align: center;
+    }
+
+    .reservation-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+    }
+
+    .reservation-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(13,13,13,0.82);
+    }
+
+    .reservation-content { position: relative; z-index: 2; }
+
+    .reservation h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 700;
+      color: var(--ivory);
+      margin-bottom: 16px;
+    }
+
+    .reservation h2 em { font-style: italic; color: var(--ember); }
+
+    .reservation p {
+      font-size: 17px;
+      color: var(--ivory-dim);
+      max-width: 500px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #080808;
+      border-top: 1px solid #1A1A1A;
+      padding: 70px 6% 30px;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 60px;
+    }
+
+    .footer-brand p {
+      font-size: 14px;
+      color: var(--ivory-dim);
+      line-height: 1.8;
+      margin-top: 16px;
+      max-width: 240px;
+    }
+
+    .footer-col h4 {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .footer-col ul { list-style: none; }
+
+    .footer-col ul li {
+      margin-bottom: 12px;
+    }
+
+    .footer-col ul li a {
+      color: var(--ivory-dim);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+
+    .footer-col ul li a:hover { color: var(--ivory); }
+
+    .footer-bottom {
+      border-top: 1px solid #1A1A1A;
+      padding-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-bottom p { font-size: 13px; color: #4A4A4A; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .featured-grid { grid-template-columns: 1fr; }
+      .feat-card--large { grid-row: span 1; min-height: 400px; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .stat { border-right: none; border-bottom: 1px solid #2A2A2A; }
+      .stat:nth-child(2n) { border-bottom: 1px solid #2A2A2A; }
+      .exp-strip { grid-template-columns: 1fr; gap: 60px; }
+      .exp-badge { bottom: -16px; right: -16px; }
+      .test-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+    }
+
+    @media (max-width: 600px) {
+      .hero-content { padding-bottom: 80px; }
+      .stats-bar { grid-template-columns: 1fr 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">Bite<span>Craft</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="contact.html" class="nav-cta">Reserve Table</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Est. 2018 — Michelin Recognised</div>
+      <h1>Where Every Plate<br>Tells a <em>Story</em></h1>
+      <p>Seasonal ingredients. Craft techniques. Unmistakable flavour. Welcome to BiteCraft — where fine dining meets soulful cooking.</p>
+      <div class="hero-actions">
+        <a href="menu.html" class="btn-primary">Explore Menu →</a>
+        <a href="contact.html" class="btn-ghost">Reserve a Table</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap" aria-hidden="true">
+    <div class="ticker">
+      <span>Italian Pizza</span>
+      <span>Beef Tenderloin</span>
+      <span>Fresh Ceviche</span>
+      <span>Truffle Risotto</span>
+      <span>Wagyu Burger</span>
+      <span>Seared Scallops</span>
+      <span>Tasting Menu Available Nightly</span>
+      <span>Italian Pizza</span>
+      <span>Beef Tenderloin</span>
+      <span>Fresh Ceviche</span>
+      <span>Truffle Risotto</span>
+      <span>Wagyu Burger</span>
+      <span>Seared Scallops</span>
+      <span>Tasting Menu Available Nightly</span>
+    </div>
+  </div>
+
+  <!-- FEATURED -->
+  <section class="section">
+    <div class="section-label">Our Specialities</div>
+    <h2 class="section-title">Crafted for the <em>Curious</em> Palate</h2>
+
+    <div class="featured-grid">
+      <div class="feat-card feat-card--large">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop" alt="Chef's Special"/>
+        <div class="feat-overlay">
+          <div class="feat-tag">Chef's Table</div>
+          <div class="feat-name">Braised Short Rib</div>
+          <div class="feat-price">$48</div>
+        </div>
+      </div>
+
+      <div class="feat-card feat-card--small">
+        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=700&auto=format&fit=crop" alt="Pizza"/>
+        <div class="feat-overlay">
+          <div class="feat-tag">Wood-Fired</div>
+          <div class="feat-name">Truffle Margherita</div>
+          <div class="feat-price">$26</div>
+        </div>
+      </div>
+
+      <div class="feat-card feat-card--small">
+        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=700&auto=format&fit=crop" alt="Salad"/>
+        <div class="feat-overlay">
+          <div class="feat-tag">Market Fresh</div>
+          <div class="feat-name">Heritage Grain Bowl</div>
+          <div class="feat-price">$19</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-number">12+</div>
+      <div class="stat-label">Years of Excellence</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">48</div>
+      <div class="stat-label">Seasonal Dishes</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">98%</div>
+      <div class="stat-label">Guest Satisfaction</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">3★</div>
+      <div class="stat-label">Critical Recognition</div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <section class="exp-strip">
+    <div class="exp-visual">
+      <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=900&auto=format&fit=crop" alt="Kitchen"/>
+      <div class="exp-badge">
+        <div class="exp-badge-num">20+</div>
+        <div class="exp-badge-label">Expert Chefs</div>
+      </div>
+    </div>
+    <div class="exp-text">
+      <div class="section-label">Why BiteCraft</div>
+      <h2 class="section-title" style="margin-bottom:24px">The Art of <em>Honest</em> Cooking</h2>
+      <p>We source directly from local farms and artisan producers — building relationships, not just menus. Every dish on our table is a commitment to quality without compromise.</p>
+      <p>Our kitchen team brings together techniques from three continents, united by a shared belief: the best food is food that respects its ingredients.</p>
+      <ul class="exp-features">
+        <li>Locally sourced, seasonally driven ingredients</li>
+        <li>Open kitchen — watch your meal come to life</li>
+        <li>Private dining for up to 18 guests</li>
+        <li>Curated wine pairings by our sommelier</li>
+      </ul>
+      <a href="about.html" class="btn-primary">Our Story →</a>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="section-label">What Guests Say</div>
+    <h2 class="section-title">Memories Made at <em>Every Table</em></h2>
+
+    <div class="test-grid">
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-quote">"The truffle risotto was unlike anything I've had in London. The texture, the depth — everything was perfectly calibrated."</p>
+        <div class="test-author">
+          <img class="test-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop" alt="Guest"/>
+          <div>
+            <div class="test-name">Sophia R.</div>
+            <div class="test-loc">New York, USA</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-quote">"We celebrated our anniversary here and every detail was perfect — from the ambience to the tasting menu. Absolutely five stars."</p>
+        <div class="test-author">
+          <img class="test-avat

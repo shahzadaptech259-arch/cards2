@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Cards with Filter and Images</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        
+        #filter-buttons {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #filter-buttons button, #search-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin: 5px;
+        }
+
+        #filter-buttons button:hover, #search-button:hover {
+            background-color: #0056b3;
+        }
+
+        #filter-buttons button:focus, #search-button:focus {
+            outline: none;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: space-evenly;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: calc(25% - 30px);
+            box-sizing: border-box;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .card p {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 300px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .search-bar input {
+            padding: 10px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        @media (max-width: 1200px) {
+            .card {
+                width: calc(33.33% - 30px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                width: calc(50% - 30px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                width: calc(100% - 30px);
+            }
+            #filter-buttons button {
+                width: 100%;
+                margin-bottom: 10px;
+                padding: 12px;
+            }
+            .img{
+                object-fit: cover;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <button onclick="filterCards('all')">all</button>
+    <button onclick="filterCards('Hatchbac')">Hatchbac</button>
+    <button onclick="filterCards('Sedan')">Sedan</button>
+    <button onclick="filterCards('SUV')">SUV</button>
+    <button onclick="filterCards('MuscleCar/Sports')">MuscleCar/Sports</button>
+    <button onclick="filterCards('SportsCar')">SportsCar</button>
+    <button onclick="filterCards('Supercar')">Supercar</button>
+    <button onclick="filterCards('ElectricSedan')">ElectricSedan</button>
+    <button onclick="filterCards('Ultra-LuxurySedan')">Ultra-LuxurySedan</button>
+    
+    
+    <div id="card-container" class="card-container"></div>
+
+    <script>
+        const cardData = [
+            { title: "alto", description: "This is a Suzuki car.", category: "Hatchbac", image: "image/images1.jpg" },
+            { title: "swift", description: "This is a Suzuki car.", category: "Hatchbac", image: "image/images2.jpg" },
+            { title: "Picanto", description: "This is a Kia car .", category: "Hatchbac", image: "image/images3.jpg" },
+            { title: "Alsvin", description: "This is a Changan car.", category: "Sedan", image: "image/images4.jpg" },
+            { title: "Civic", description: "This is a Honda car. ", category: "Sedan", image: "image/images5.jpg" },
+            { title: "Corolla", description: "This is a Honda car. ", category: "Sedan", image: "image/images6.jpg" },
+            { title: "Sportage", description: "This is a Kia car.", category: "SUV", image: "image/images7.jpg" },
+            { title: "Tucson", description: "This is a Hyundai car.", category: "SUV", image: "image/images8.jpg" },
+            { title: "Creta", description: "This is a Hyundai car.", category: "SUV", image: "image/images9.jpg" },
+            { title: "Scorpio-N", description: "This is a Mahindra car.", category: "SUV", image: "image/images10.jpg" },
+            { title: "Mustang", description: "This is a Ford car.", category: "MuscleCar/Sports", image: "image/images11.jpg" },
+            { title: "911", description: "This is a Porsche car.", category: "SportsCar", image: "image/images12.jpg" },
+            { title: "Aventador", description: "This is a Lamborghini car.", category: "Supercar", image: "image/images13.jpg" },
+            { title: "Model S", description: "This is a Tesla car.", category: "ElectricSedan", image: "image/images14.jpg" },
+            { title: "Phantom", description: "This is a Rolls-Royce car.", category: "Ultra-LuxurySedan", image: "image/images15.jpg" },
+        ];
+
+        const cardContainer = document.getElementById('card-container');
+
+        function displayCards(cards) {
+            let cardsHTML = '';
+            for(i=0;i<cards.length;i++){
+                var card = cards[i];
+            
+            
+                cardsHTML += `
+                    <div class="card">
+                        <img src="${card.image}" alt="${card.title}" class="card-img-top img" height="300" width="300">
+                        <h3>${card.title}</h3>
+                        <p>${card.description}</p>
+                    </div>
+                `;
+          
+                }
+            cardContainer.innerHTML = cardsHTML;
+        }
+
+        displayCards(cardData);
+        function filterCards(category){
+            var  filterCards; 
+            if(category==='all'){
+                filterCards=cardData;
+            }
+            else{
+                filterCards=cardData.filter(card =>card.category  === category);
+
+            }
+            displayCards(filterCards)
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet  type="text/css" href="style.css"?>
+<labrary>
+    <book>
+        <title>xml basics</title>
+        <aurthor>moshin</aurthor>
+        <price>25.99</price>
+    </book>
+     <book>
+        <title> learning css</title>
+        <aurthor>yasir</aurthor>
+        <price>27.99</price>
+    </book>
+     <book>
+        <title>web development</title>
+        <aurthor>shahzad</aurthor>
+        <price>24.99</price>
+    </book>
+</labrary>

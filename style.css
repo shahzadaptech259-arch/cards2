@@ -1,0 +1,35 @@
+labrary{
+    /* display: block; */
+    color: aliceblue;
+    padding: 10px;
+    font-family: 'Courier New', Courier, monospace;
+
+}
+book{
+ display: block;
+    background-color: rgb(167, 5, 5);
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid white;
+    border-radius: 8px;
+}
+title{
+     display: block;
+    font-size: 20px;
+    color: blue;
+    font-weight: bold;
+}
+author{
+     display: block;
+    font-size: 20px;
+    color: blue;
+    /* font-weight: bold; */
+    margin-top: 5px;
+}
+price{
+     display: block;
+    /* font-size: 20px; */
+    color: blue;
+    font-weight: bold;
+    margin-top: 5px;
+}

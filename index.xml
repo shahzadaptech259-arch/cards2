@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- atributes in xml -->
+ <aptech>
+ <student id="001>
+        <name>shahzad</name>
+        <age> 19 </age>
+        <city> karachi </city>
+</student>
+ <student id="001>
+        <name>waseem</name>
+        <age> 25 </age>
+        <city> lahore </city>
+ </student>
+ </aptech>
+ <!-- nested element -->
+  <company>
+    <department name="HR">
+        <employee>
+            <name>shahzad</name>
+            <role>manger</role>
+        </employee>
+    </department>
+    <department name="IT">
+        <employee>
+            <name>hamza</name>
+            <role>developer</role>
+        </employee>
+    </department>
+  </company>
+  <!-- slef closing tag  -->
+   <student>
+    <name> ali</name>
+    <coruses>
+                 <coruse name="math"/>
+                 <coruse name="biology"/>
+                 <coruse name="urdu"/>
+    </coruses>
+   </student>
